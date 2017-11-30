@@ -1,5 +1,6 @@
 import com.sun.deploy.panel.JavaPanel;
 import javafx.scene.control.RadioButton;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import javax.swing.*;
 import javax.swing.plaf.BorderUIResource;
@@ -12,6 +13,7 @@ import java.awt.event.ActionListener;
  */
 public class GUI extends JFrame implements Constants
 {
+    private SystemContainer systemContainer;
     private Sender sender;
     private Receiver receiver;
 
@@ -37,10 +39,11 @@ public class GUI extends JFrame implements Constants
     private JRadioButton packetDrop;
     private JRadioButton receiverNoDrop;
 
-    GUI(Sender sender, Receiver receiver)
+    GUI(SystemContainer systemContainer)
     {
-        this.sender = sender;
-        this.receiver = receiver;
+        this.systemContainer = systemContainer;
+        this.sender = systemContainer.getSender();
+        this.receiver = systemContainer.getReceiver();
 
         createFrame();
         createSenderPanel();

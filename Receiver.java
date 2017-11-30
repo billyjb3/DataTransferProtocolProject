@@ -3,4 +3,10 @@
  */
 public class Receiver
 {
+    private SystemContainer systemContainer;
+
+    public Receiver(SystemContainer systemContainer)
+    {
+        this.systemContainer = systemContainer;
+    }
 }
