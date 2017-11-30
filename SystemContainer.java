@@ -12,6 +12,10 @@ public class SystemContainer
         sender = new Sender(this);
         receiver = new Receiver(this);
         gui = new GUI(this);
+
+        sender.init();
+        receiver.init();
+        gui.init();
     }
     public Sender getSender()
     {

@@ -41,7 +41,11 @@ public class GUI extends JFrame implements Constants
 
     GUI(SystemContainer systemContainer)
     {
-        this.systemContainer = systemContainer;
+        this.systemContainer = systemContainer;//this is the only thing that should be here.
+        // any other calls that need to be at constructor level go in the init() method.
+    }
+    public void init()
+    {
         this.sender = systemContainer.getSender();
         this.receiver = systemContainer.getReceiver();
 
@@ -57,6 +61,14 @@ public class GUI extends JFrame implements Constants
         setLocationRelativeTo(null);
     }
 
+    public void writeLineSender(String line)
+    {
+        senderText.append(line + "\n");
+    }
+    public void writeLineReceiver(String line)
+    {
+        receiverText.append(line + "\n");
+    }
     public int getSenderState()
     {
         if(senderRandom.isSelected())
@@ -187,7 +199,7 @@ public class GUI extends JFrame implements Constants
             {
                 if(!input.getText().isEmpty())
                 {
-                    senderText.append(input.getText());
+                    //senderText.append(input.getText());
                     sender.sendMessage(input.getText());
                 }
             }

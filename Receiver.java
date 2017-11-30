@@ -9,7 +9,11 @@ public class Receiver implements Constants
 
     public Receiver(SystemContainer systemContainer)
     {
-        this.systemContainer = systemContainer;
+        this.systemContainer = systemContainer;//this is the only thing that should be here.
+        // any other calls that need to be at constructor level go in the init() method.
+    }
+    public void init()
+    {
         this.sender = systemContainer.getSender();
         this.gui = systemContainer.getGUI();
     }
