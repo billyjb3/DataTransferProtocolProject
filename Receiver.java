@@ -1,7 +1,7 @@
 /**
  * Created by User on 11/29/2017.
  */
-public class Receiver
+public class Receiver implements Constants
 {
     private SystemContainer systemContainer;
     private Sender sender;
