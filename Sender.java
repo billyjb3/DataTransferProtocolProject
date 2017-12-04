@@ -1,24 +1,50 @@
+import java.math.BigInteger;
+import java.util.ArrayList;
+
 /**
  * Created by User on 11/29/2017.
  */
-public class Sender implements Constants
+public class Sender extends Transceiver implements Constants
 {
-    private SystemContainer systemContainer;
-    private Receiver receiver;
-    private GUI gui;
+    private byte currentSeq = (byte)1;
 
     public Sender(SystemContainer systemContainer)
     {
-        this.systemContainer = systemContainer; //this is the only thing that should be here.
-        // any other calls that need to be at constructor level go in the init() method.
+        super(systemContainer);
     }
-    public void init()
+
+    @Override
+    public void sendMessage(byte[] packet)
     {
-        this.receiver = systemContainer.getReceiver();
-        this.gui = systemContainer.getGUI();
+        sendLog.add(packet);
+        gui.writeLineSender("Sent Packet: " + getBits(packet));
+        receiver.receiveMessage(packet);
     }
-    public void sendMessage(String message)
+    @Override
+    public void receiveMessage(byte[] packet)
     {
-        gui.writeLineSender(message);
+        receiveLog.add(packet);
+        gui.writeLineSender("received ACK: " + getBits(packet));
     }
+
+    public void createMessage(String message)
+    {
+        currentSeq = 1;
+        gui.writeLineSender("Message: " + message);
+        try
+        {
+            byte[] bmess = message.getBytes("UTF-16LE");
+            System.out.println(bmess.length);
+            for(int i = 0; i < bmess.length; i += 2)
+            {
+                byte[] tb = new byte[3];
+                tb[0] = currentSeq++;
+                tb[1] = bmess[i];
+                tb[2] = bmess[i+1];
+                sendMessage(tb);
+            }
+        }
+        catch(Exception e){e.printStackTrace();}
+    }
+
 }

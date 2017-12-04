@@ -1,21 +1,27 @@
 /**
  * Created by User on 11/29/2017.
  */
-public class Receiver implements Constants
+public class Receiver extends Transceiver implements Constants
 {
-    private SystemContainer systemContainer;
-    private Sender sender;
-    private GUI gui;
-
     public Receiver(SystemContainer systemContainer)
     {
-        this.systemContainer = systemContainer;//this is the only thing that should be here.
-        // any other calls that need to be at constructor level go in the init() method.
+        super(systemContainer);
     }
-    public void init()
+
+    @Override
+    public void sendMessage(byte[] packet)
     {
-        this.sender = systemContainer.getSender();
-        this.gui = systemContainer.getGUI();
+        byte[] ack = new byte[1];
+        ack[0] = packet[0];
+        gui.writeLineReceiver("sent ACK: " + getBits(ack));
+        sender.receiveMessage(ack);
+    }
+    @Override
+    public void receiveMessage(byte[] packet)
+    {
+        receiveLog.add(packet);
+        gui.writeLineReceiver("received packet: " + getBits(packet));
+        sendMessage(packet);
     }
 
 }

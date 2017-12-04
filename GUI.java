@@ -1,7 +1,3 @@
-import com.sun.deploy.panel.JavaPanel;
-import javafx.scene.control.RadioButton;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
-
 import javax.swing.*;
 import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
@@ -17,7 +13,7 @@ public class GUI extends JFrame implements Constants
     private Sender sender;
     private Receiver receiver;
 
-    private int width = 800;
+    private int width = 1200;
     private int height = width*9/16;
     private JPanel senderPanel;
     private JPanel receiverPanel;
@@ -200,7 +196,7 @@ public class GUI extends JFrame implements Constants
                 if(!input.getText().isEmpty())
                 {
                     //senderText.append(input.getText());
-                    sender.sendMessage(input.getText());
+                    sender.createMessage(input.getText());
                 }
             }
         });
