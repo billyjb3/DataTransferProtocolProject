@@ -27,13 +27,18 @@ public class GUI extends JFrame implements Constants
 
     private JTextField input;
     private JButton sendButton;
+    private JButton clearButton;
 
     private JRadioButton senderRandom;
-    private JRadioButton ACKdrop;
-    private JRadioButton senderNoDrop;
+    private JRadioButton senderLoseACK;
+    private JRadioButton senderNoLoss;
+
     private JRadioButton receiverRandom;
-    private JRadioButton packetDrop;
-    private JRadioButton receiverNoDrop;
+    private JRadioButton receiverLosePacket;
+    private JRadioButton receiverNoLoss;
+
+    private JRadioButton goBackN;
+    private JRadioButton selectiveRepeat;
 
     GUI(SystemContainer systemContainer)
     {
@@ -69,9 +74,9 @@ public class GUI extends JFrame implements Constants
     {
         if(senderRandom.isSelected())
             return SENDER_RANDOM;
-        else if(ACKdrop.isSelected())
+        else if(senderLoseACK.isSelected())
             return SENDER_ACKDROP;
-        else if(senderNoDrop.isSelected())
+        else if(senderNoLoss.isSelected())
             return SENDER_NODROP;
         return -1;
     }
@@ -79,9 +84,9 @@ public class GUI extends JFrame implements Constants
     {
         if(receiverRandom.isSelected())
             return RECEIVER_RANDOM;
-        else if(packetDrop.isSelected())
+        else if(receiverLosePacket.isSelected())
             return RECEIVER_PACKETDROP;
-        else if(receiverNoDrop.isSelected())
+        else if(receiverNoLoss.isSelected())
             return RECEIVER_NODROP;
         return -1;
     }
@@ -91,6 +96,7 @@ public class GUI extends JFrame implements Constants
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBackground(Color.black);
+        setTitle("Data Transfer Protocol Project");
 
         FlowLayout flayout = new FlowLayout();
         flayout.setHgap(0);
@@ -112,17 +118,17 @@ public class GUI extends JFrame implements Constants
         JPanel radioPanel = new JPanel();
         radioPanel.setLayout(new GridLayout(3,1));
         senderRandom = new JRadioButton("Random");
-        ACKdrop = new JRadioButton("ACK Drop");
-        senderNoDrop = new JRadioButton("No Drop");
+        senderLoseACK = new JRadioButton("Lose ACK");
+        senderNoLoss = new JRadioButton("No Loss");
         senderRandom.setSelected(true);
         radioPanel.add(senderRandom);
-        radioPanel.add(ACKdrop);
-        radioPanel.add(senderNoDrop);
+        radioPanel.add(senderLoseACK);
+        radioPanel.add(senderNoLoss);
         senderPanel.add(radioPanel);
         ButtonGroup senderRadioGroup = new ButtonGroup();
         senderRadioGroup.add(senderRandom);
-        senderRadioGroup.add(ACKdrop);
-        senderRadioGroup.add(senderNoDrop);
+        senderRadioGroup.add(senderLoseACK);
+        senderRadioGroup.add(senderNoLoss);
 
         senderText = new JTextArea((height/3*2-50)/15,  (width/4)/10);
         senderText.setEditable(false);
@@ -148,16 +154,16 @@ public class GUI extends JFrame implements Constants
         JPanel radioPanel = new JPanel();
         radioPanel.setLayout(new GridLayout(3,1));
         receiverRandom = new JRadioButton("Random");
-        packetDrop = new JRadioButton("Drop Packet");
-        receiverNoDrop = new JRadioButton("No Drop");
+        receiverLosePacket = new JRadioButton("Lose Packet");
+        receiverNoLoss = new JRadioButton("No Loss");
         receiverRandom.setSelected(true);
         radioPanel.add(receiverRandom);
-        radioPanel.add(packetDrop);
-        radioPanel.add(receiverNoDrop);
+        radioPanel.add(receiverLosePacket);
+        radioPanel.add(receiverNoLoss);
         ButtonGroup radioGroup = new ButtonGroup();
         radioGroup.add(receiverRandom);
-        radioGroup.add(packetDrop);
-        radioGroup.add(receiverNoDrop);
+        radioGroup.add(receiverLosePacket);
+        radioGroup.add(receiverNoLoss);
         receiverPanel.add(radioPanel);
     }
     private void createInputPanel()
@@ -173,13 +179,15 @@ public class GUI extends JFrame implements Constants
         input = new JTextField();
         input.setPreferredSize(new Dimension(width/3, 20));
         sendButton = new JButton("Send");
+        clearButton = new JButton("Clear");
         inputPanel.add(input);
         inputPanel.add(sendButton);
+        inputPanel.add(clearButton);
 
         JPanel protocolPanel = new JPanel();
         protocolPanel.setLayout(new GridLayout(1,2));
-        JRadioButton goBackN = new JRadioButton("Go-Back-N");
-        JRadioButton selectiveRepeat = new JRadioButton("Selective Repeat");
+        goBackN = new JRadioButton("Go-Back-N");
+        selectiveRepeat = new JRadioButton("Selective Repeat");
         goBackN.setSelected(true);
         protocolPanel.add(goBackN);
         protocolPanel.add(selectiveRepeat);
@@ -195,9 +203,33 @@ public class GUI extends JFrame implements Constants
             {
                 if(!input.getText().isEmpty())
                 {
-                    //senderText.append(input.getText());
+                    /*
+                    if(senderRandom.isSelected())
+                    else if(senderLoseACK.isSelected())
+                    else if(senderNoLoss.isSelected())
+
+
+                    if(receiverRandom.isSelected())
+                    else if(receiverLosePacket.isSelected())
+                    else if(receiverNoLoss.isSelected())
+
+
+                    if(goBackN.isSelected())
+                    else if(selectiveRepeat.isSelected())
+                    */
+
                     sender.createMessage(input.getText());
                 }
+            }
+        });
+        clearButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                senderText.setText("");
+                receiverText.setText("");
+                input.setText("");
             }
         });
     }
